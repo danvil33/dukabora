@@ -8,9 +8,15 @@ const prisma = new PrismaClient();
 app.use(cors());
 app.use(express.json());
 
+app.use(express.static("public"));
+
 const PORT = process.env.PORT || 3000;
 
-/* SAVE CUSTOMER */
+app.get("/", (req, res) => {
+    res.sendFile(__dirname + "/public/index.html");
+});
+
+
 app.post("/customers", async (req, res) => {
     try {
         const customer = await prisma.customer.create({
@@ -26,7 +32,7 @@ app.post("/customers", async (req, res) => {
     }
 });
 
-/* GET ALL DATA (for checking in browser/Postman) */
+/* GET ALL CUSTOMERS */
 app.get("/customers", async (req, res) => {
     try {
         const customers = await prisma.customer.findMany();
