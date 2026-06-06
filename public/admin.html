@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>DukaBora Admin</title>
+
+<script src="https://cdn.tailwindcss.com"></script>
+
+</head>
+<body class="bg-gray-100">
+
+<div class="max-w-7xl mx-auto p-8">
+
+    <div class="flex justify-between items-center mb-8">
+        <h1 class="text-4xl font-bold">
+            DukaBora Admin Dashboard
+        </h1>
+
+        <div class="bg-orange-500 text-white px-6 py-3 rounded-lg">
+            Total Customers:
+            <span id="totalCustomers">0</span>
+        </div>
+    </div>
+
+    <input
+        type="text"
+        id="search"
+        placeholder="Search customer..."
+        class="w-full p-3 border rounded-lg mb-6">
+
+    <div class="bg-white rounded-xl shadow overflow-hidden">
+
+        <table class="w-full">
+
+            <thead class="bg-orange-500 text-white">
+
+                <tr>
+                    <th class="p-3">ID</th>
+                    <th class="p-3">Name</th>
+                    <th class="p-3">Email</th>
+                    <th class="p-3">Phone</th>
+                    <th class="p-3">Actions</th>
+                </tr>
+
+            </thead>
+
+            <tbody id="tableBody"></tbody>
+
+        </table>
+
+    </div>
+
+</div>
+
+<script>
+
+const API = "https://dukabora.onrender.com";
+
+let customers = [];
+
+async function loadCustomers() {
+
+    const res = await fetch(`${API}/customers`);
+
+    customers = await res.json();
+
+    document.getElementById("totalCustomers").innerText =
+        customers.length;
+
+    renderTable(customers);
+}
+
+function renderTable(data) {
+
+    const table = document.getElementById("tableBody");
+
+    table.innerHTML = "";
+
+    data.forEach(customer => {
+
+        table.innerHTML += `
+        <tr class="border-b">
+
+            <td class="p-3">${customer.id}</td>
+            <td class="p-3">${customer.name}</td>
+            <td class="p-3">${customer.email}</td>
+            <td class="p-3">${customer.phone}</td>
+
+            <td class="p-3">
+
+                <button
+                    onclick="editCustomer(${customer.id})"
+                    class="bg-blue-500 text-white px-3 py-1 rounded">
+                    Edit
+                </button>
+
+                <button
+                    onclick="deleteCustomer(${customer.id})"
+                    class="bg-red-500 text-white px-3 py-1 rounded ml-2">
+                    Delete
+                </button>
+
+            </td>
+
+        </tr>
+        `;
+    });
+}
+
+async function deleteCustomer(id) {
+
+    if (!confirm("Delete customer?")) return;
+
+    await fetch(`${API}/customers/${id}`, {
+        method: "DELETE"
+    });
+
+    loadCustomers();
+}
+
+async function editCustomer(id) {
+
+    const customer =
+        customers.find(c => c.id === id);
+
+    const name =
+        prompt("Name", customer.name);
+
+    if (!name) return;
+
+    const email =
+        prompt("Email", customer.email);
+
+    if (!email) return;
+
+    const phone =
+        prompt("Phone", customer.phone);
+
+    if (!phone) return;
+
+    await fetch(`${API}/customers/${id}`, {
+        method: "PUT",
+        headers: {
+            "Content-Type":"application/json"
+        },
+        body: JSON.stringify({
+            name,
+            email,
+            phone
+        })
+    });
+
+    loadCustomers();
+}
+
+document
+.getElementById("search")
+.addEventListener("input", e => {
+
+    const keyword =
+        e.target.value.toLowerCase();
+
+    const filtered =
+        customers.filter(c =>
+            c.name.toLowerCase().includes(keyword) ||
+            c.email.toLowerCase().includes(keyword) ||
+            c.phone.toLowerCase().includes(keyword)
+        );
+
+    renderTable(filtered);
+});
+
+loadCustomers();
+
+</script>
+
+</body>
+</html>

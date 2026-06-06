@@ -7,32 +7,23 @@ const prisma = new PrismaClient();
 
 app.use(cors());
 app.use(express.json());
-
 app.use(express.static("public"));
 
 const PORT = process.env.PORT || 3000;
 
-app.get("/", (req, res) => {
-    res.sendFile(__dirname + "/public/index.html");
-});
-
-
+/* CREATE */
 app.post("/customers", async (req, res) => {
     try {
         const customer = await prisma.customer.create({
             data: req.body
         });
-
-        res.json({
-            message: "Saved successfully",
-            data: customer
-        });
+        res.json(customer);
     } catch (error) {
         res.status(500).json({ error: error.message });
     }
 });
 
-/* GET ALL CUSTOMERS */
+/* READ */
 app.get("/customers", async (req, res) => {
     try {
         const customers = await prisma.customer.findMany();
@@ -42,6 +33,31 @@ app.get("/customers", async (req, res) => {
     }
 });
 
+/* UPDATE */
+app.put("/customers/:id", async (req, res) => {
+    try {
+        const customer = await prisma.customer.update({
+            where: { id: Number(req.params.id) },
+            data: req.body
+        });
+        res.json(customer);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+});
+
+/* DELETE */
+app.delete("/customers/:id", async (req, res) => {
+    try {
+        await prisma.customer.delete({
+            where: { id: Number(req.params.id) }
+        });
+        res.json({ message: "Deleted" });
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+});
+
 app.listen(PORT, () => {
-    console.log(`Server running on http://localhost:${PORT}`);
+    console.log(`Server running on port ${PORT}`);
 });
