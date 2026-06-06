@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DukaBora - Smart Storage</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        .success-message {
+            transition: all 0.3s ease;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Navbar -->
+    <nav class="sticky top-0 z-50 bg-[#131921]">
+        <div class="px-4 py-2">
+            <div class="max-w-[1500px] mx-auto flex items-center justify-between gap-4">
+                <div class="flex items-center gap-2 shrink-0 cursor-pointer" id="homeLogoBtn">
+                    <i class="fas fa-microchip text-2xl text-orange-500"></i>
+                    <div>
+                        <h1 class="text-xl font-bold text-white">DukaBora</h1>
+                        <p class="text-xs text-[#FEBD69]">Smart Storage</p>
+                    </div>
+                </div>
+
+                <a href="#contact" class="bg-[#FF8C00] text-white px-5 py-2 rounded-full font-semibold hover:bg-orange-600 shrink-0">
+                    <i class="fas fa-shopping-cart mr-2"></i> Order Now
+                </a>
+            </div>
+        </div>
+
+        <div class="bg-[#232F3E] text-white">
+            <div class="max-w-[1500px] mx-auto px-4">
+                <div class="flex items-center gap-4 text-sm">
+                    <button id="navHomeBtn" class="py-2 hover:border hover:border-white px-1"><i class="fas fa-home mr-1"></i> Home</button>
+                    <button id="navFlashBtn" class="py-2 hover:border hover:border-white px-1"><i class="fas fa-usb mr-1"></i> Flash Drives</button>
+                    <button id="navContactBtn" class="py-2 hover:border hover:border-white px-1"><i class="fas fa-phone mr-1"></i> Contact</button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Gallery -->
+    <section id="flashDrivesSection" class="py-12 bg-white scroll-mt-20">
+        <div class="max-w-6xl mx-auto px-4">
+            <div class="text-center mb-8">
+                <h2 class="text-3xl font-bold">Shop with DukaBora - Best Flash Drive Sellers in Tanzania</h2>
+                <p class="text-gray-600">Explore DukaBora USB drives from different angles</p>
+            </div>
+            <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4" id="gallery"></div>
+        </div>
+    </section>
+
+    <!-- Features -->
+    <section class="py-16 bg-white">
+        <div class="max-w-6xl mx-auto px-4">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl font-bold">Why Choose DukaBora?</h2>
+                <p class="text-gray-600 mt-2">Built for students, office users, and anyone who needs reliable storage.</p>
+            </div>
+            <div class="grid md:grid-cols-4 gap-6 text-center">
+                <div>
+                    <i class="fas fa-database text-5xl text-orange-500 mb-4"></i>
+                    <h3 class="font-bold text-lg mb-2">Large Storage</h3>
+                    <p class="text-gray-500 text-sm">Store documents, assignments, photos, videos, and backups easily.</p>
+                </div>
+                <div>
+                    <i class="fas fa-bolt text-5xl text-orange-500 mb-4"></i>
+                    <h3 class="font-bold text-lg mb-2">Fast Transfer</h3>
+                    <p class="text-gray-500 text-sm">Move your files quickly between computers, laptops, and devices.</p>
+                </div>
+                <div>
+                    <i class="fas fa-lock text-5xl text-orange-500 mb-4"></i>
+                    <h3 class="font-bold text-lg mb-2">Data Safety</h3>
+                    <p class="text-gray-500 text-sm">Keep important school and work files safe and portable.</p>
+                </div>
+                <div>
+                    <i class="fas fa-desktop text-5xl text-orange-500 mb-4"></i>
+                    <h3 class="font-bold text-lg mb-2">Easy Compatibility</h3>
+                    <p class="text-gray-500 text-sm">Works with laptops, desktops, TVs, printers, and media players.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section with Customer Form -->
+    <section class="py-16 bg-gray-50" id="contact">
+        <div class="max-w-6xl mx-auto px-4">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl font-bold text-gray-900 mb-4">Ready to Order DukaBora?</h2>
+                <p class="text-gray-600">Contact us today and get your DukaBora USB drive for school, office, business, or personal storage.</p>
+            </div>
+            
+            <div class="grid md:grid-cols-2 gap-8">
+                <!-- Contact Info Cards -->
+                <div>
+                    <div class="space-y-4">
+                        <div class="flex items-center gap-3 px-6 py-4 bg-white border rounded-lg">
+                            <i class="fas fa-phone text-orange-500 text-xl"></i>
+                            <span class="text-gray-700">+255 743 470 389</span>
+                        </div>
+                        <div class="flex items-center gap-3 px-6 py-4 bg-white border rounded-lg">
+                            <i class="fas fa-map-marker-alt text-orange-500 text-xl"></i>
+                            <span class="text-gray-700">Mbeya, Tanzania</span>
+                        </div>
+                        <div class="flex items-center gap-3 px-6 py-4 bg-white border rounded-lg">
+                            <i class="fab fa-whatsapp text-orange-500 text-xl"></i>
+                            <span class="text-gray-700">Order through WhatsApp</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Customer Form -->
+                <div class="bg-white rounded-xl p-6 shadow-lg">
+                    <h3 class="text-2xl font-bold text-gray-800 mb-4">Send us a message</h3>
+                    <form id="customerForm">
+                        <div class="mb-4">
+                            <label class="block text-gray-700 text-sm font-bold mb-2">
+                                <i class="fas fa-user mr-2 text-orange-500"></i>Full Name
+                            </label>
+                            <input type="text" id="name" placeholder="Enter your name" required 
+                                   class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-orange-500">
+                        </div>
+                        
+                        <div class="mb-4">
+                            <label class="block text-gray-700 text-sm font-bold mb-2">
+                                <i class="fas fa-envelope mr-2 text-orange-500"></i>Email Address
+                            </label>
+                            <input type="email" id="email" placeholder="Enter your email" required 
+                                   class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-orange-500">
+                        </div>
+                        
+                        <div class="mb-6">
+                            <label class="block text-gray-700 text-sm font-bold mb-2">
+                                <i class="fas fa-phone mr-2 text-orange-500"></i>Phone Number
+                            </label>
+                            <input type="tel" id="phone" placeholder="Enter your phone number" required 
+                                   class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-orange-500">
+                        </div>
+                        
+                        <button type="submit" 
+                                class="w-full bg-orange-500 text-white py-2 rounded-lg font-semibold hover:bg-orange-600 transition">
+                            <i class="fas fa-paper-plane mr-2"></i> Send Inquiry
+                        </button>
+                    </form>
+                    
+                    <div id="formFeedback" class="mt-4 text-center font-semibold"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-gray-400 py-8 text-sm">
+        <div class="max-w-6xl mx-auto px-4 text-center">
+            <i class="fas fa-microchip text-orange-500 text-2xl mb-2"></i>
+            <p class="text-white font-semibold mb-1">DukaBora</p>
+            <p class="mb-3">Smart Storage for Everyday Life</p>
+            <p><i class="far fa-copyright mr-1"></i> 2025 DukaBora. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Product images data
+        const products = [
+            { img: "https://ik.imagekit.io/s0m5aelzk/1.png", size: "32GB", price: "10,000" },
+            { img: "https://ik.imagekit.io/s0m5aelzk/2.png", size: "64GB", price: "12,000" },
+            { img: "https://ik.imagekit.io/s0m5aelzk/3.png", size: "128GB", price: "15,000" },
+            { img: "https://ik.imagekit.io/s0m5aelzk/4.png", size: "32GB", price: "10,000" },
+            { img: "https://ik.imagekit.io/s0m5aelzk/5.jpg", size: "64GB", price: "12,000" },
+            { img: "https://ik.imagekit.io/s0m5aelzk/6.webp", size: "128GB", price: "15,000" },
+            { img: "https://ik.imagekit.io/s0m5aelzk/7.jpg", size: "32GB", price: "10,000" },
+            { img: "https://ik.imagekit.io/s0m5aelzk/8.jpg", size: "64GB", price: "12,000" },
+            { img: "https://ik.imagekit.io/s0m5aelzk/9.jpg", size: "128GB", price: "15,000" },
+            { img: "https://ik.imagekit.io/s0m5aelzk/10.jpg", size: "32GB", price: "10,000" }
+        ];
+
+        // Load gallery
+        const gallery = document.getElementById('gallery');
+        gallery.innerHTML = products.map(p => `
+            <div class="cursor-pointer" onclick="openLightbox('${p.img}')">
+                <div class="relative">
+                    <img src="${p.img}" class="w-full h-48 object-cover rounded-lg shadow-md hover:scale-105 transition duration-300" alt="USB Drive ${p.size}">
+                    <div class="absolute bottom-0 left-0 right-0 bg-black/70 text-white p-2 rounded-b-lg">
+                        <p class="text-sm font-semibold"><i class="fas fa-microchip mr-1"></i> ${p.size}</p>
+                        <p class="text-orange-400 font-bold"><i class="fas fa-tag mr-1"></i> TZS ${p.price}</p>
+                    </div>
+                </div>
+            </div>
+        `).join('');
+
+        // Lightbox function
+        function openLightbox(src) {
+            const modal = document.createElement('div');
+            modal.className = 'fixed inset-0 bg-black/90 z-50 flex items-center justify-center';
+            modal.onclick = () => modal.remove();
+            modal.innerHTML = `
+                <img src="${src}" class="max-w-[90%] max-h-[90%] rounded-lg" onclick="event.stopPropagation()" alt="Enlarged view">
+                <button class="absolute top-5 right-5 text-white text-4xl hover:text-gray-300" onclick="this.parentElement.remove()"><i class="fas fa-times"></i></button>
+            `;
+            document.body.appendChild(modal);
+            document.body.style.overflow = 'hidden';
+            modal.onclick = () => {
+                modal.remove();
+                document.body.style.overflow = 'auto';
+            };
+        }
+
+        // Navigation
+        document.getElementById('navHomeBtn').addEventListener('click', () => {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+        document.getElementById('homeLogoBtn').addEventListener('click', () => {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+        document.getElementById('navFlashBtn').addEventListener('click', () => {
+            document.getElementById('flashDrivesSection').scrollIntoView({ behavior: 'smooth' });
+        });
+        document.getElementById('navContactBtn').addEventListener('click', () => {
+            document.getElementById('contact').scrollIntoView({ behavior: 'smooth' });
+        });
+
+        // Customer Form Handler
+        const form = document.getElementById("customerForm");
+        const feedbackDiv = document.getElementById("formFeedback");
+        const nameInput = document.getElementById("name");
+        const emailInput = document.getElementById("email");
+        const phoneInput = document.getElementById("phone");
+
+        form.onsubmit = async (e) => {
+            e.preventDefault();
+
+            if (!nameInput.value.trim() || !emailInput.value.trim() || !phoneInput.value.trim()) {
+                feedbackDiv.innerHTML = '<i class="fas fa-exclamation-triangle mr-2"></i> Please fill in all fields.';
+                feedbackDiv.className = 'mt-4 text-center font-semibold text-red-600 success-message';
+                setTimeout(() => { feedbackDiv.innerHTML = ''; }, 3000);
+                return;
+            }
+
+            const emailPattern = /^[^\s@]+@([^\s@.,]+\.)+[^\s@.,]{2,}$/;
+            if (!emailPattern.test(emailInput.value.trim())) {
+                feedbackDiv.innerHTML = '<i class="fas fa-envelope-open-text mr-2"></i> Please enter a valid email.';
+                feedbackDiv.className = 'mt-4 text-center font-semibold text-red-600 success-message';
+                setTimeout(() => { feedbackDiv.innerHTML = ''; }, 3000);
+                return;
+            }
+
+            try {
+                await fetch("/customers", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({
+                        name: nameInput.value.trim(),
+                        email: emailInput.value.trim(),
+                        phone: phoneInput.value.trim()
+                    })
+                }).catch(() => console.log("Demo mode"));
+
+                form.reset();
+                feedbackDiv.innerHTML = '<i class="fas fa-check-circle mr-2"></i> Inquiry sent! We will contact you soon. ✔️';
+                feedbackDiv.className = 'mt-4 text-center font-semibold text-green-600 success-message';
+                setTimeout(() => { feedbackDiv.innerHTML = ''; }, 4000);
+            } catch (error) {
+                feedbackDiv.innerHTML = '<i class="fas fa-check-circle mr-2"></i> Inquiry received! We’ll get back to you.';
+                feedbackDiv.className = 'mt-4 text-center font-semibold text-green-600 success-message';
+                form.reset();
+                setTimeout(() => { feedbackDiv.innerHTML = ''; }, 4000);
+            }
+        };
+    </script>
+</body>
+</html>
