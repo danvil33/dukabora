@@ -2,178 +2,173 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>DukaBora Admin</title>
-
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>DukaBora Admin | Responsive</title>
 <script src="https://cdn.tailwindcss.com"></script>
-
+<style>
+  /* Minimal responsive table → cards on mobile */
+  @media (max-width: 640px) {
+    .responsive-table thead {
+      display: none;
+    }
+    .responsive-table tbody tr {
+      display: block;
+      margin-bottom: 1rem;
+      border: 1px solid #e5e7eb;
+      border-radius: 1rem;
+      background: white;
+      padding: 1rem;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    }
+    .responsive-table tbody td {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0.5rem 0;
+      border-bottom: 1px solid #f3f4f6;
+    }
+    .responsive-table tbody td:last-child {
+      border-bottom: none;
+    }
+    .responsive-table tbody td::before {
+      content: attr(data-label);
+      font-weight: 600;
+      color: #374151;
+      width: 35%;
+      font-size: 0.85rem;
+    }
+    .responsive-table tbody td[data-label="Actions"]::before {
+      display: none;
+    }
+    .action-group {
+      display: flex;
+      gap: 0.75rem;
+      justify-content: flex-end;
+      width: 100%;
+    }
+  }
+</style>
 </head>
 <body class="bg-gray-100">
 
-<div class="max-w-7xl mx-auto p-8">
-
-    <div class="flex justify-between items-center mb-8">
-        <h1 class="text-4xl font-bold">
-            DukaBora Admin Dashboard
-        </h1>
-
-        <div class="bg-orange-500 text-white px-6 py-3 rounded-lg">
-            Total Customers:
-            <span id="totalCustomers">0</span>
-        </div>
+<div class="max-w-7xl mx-auto p-4 md:p-8">
+  
+  <!-- Header: stacks on mobile -->
+  <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
+    <h1 class="text-3xl md:text-4xl font-bold text-gray-800">DukaBora Admin</h1>
+    <div class="bg-orange-500 text-white px-5 py-2.5 rounded-lg shadow flex items-center gap-2">
+      <span>📊 Total:</span>
+      <span id="totalCustomers" class="font-bold text-xl">0</span>
     </div>
+  </div>
 
-    <input
-        type="text"
-        id="search"
-        placeholder="Search customer..."
-        class="w-full p-3 border rounded-lg mb-6">
+  <!-- Search: full width, touch friendly -->
+  <input type="text" id="search" placeholder="🔍 Search by name, email or phone..." 
+         class="w-full p-3 border border-gray-300 rounded-xl mb-6 focus:outline-none focus:ring-2 focus:ring-orange-400">
 
-    <div class="bg-white rounded-xl shadow overflow-hidden">
-
-        <table class="w-full">
-
-            <thead class="bg-orange-500 text-white">
-
-                <tr>
-                    <th class="p-3">ID</th>
-                    <th class="p-3">Name</th>
-                    <th class="p-3">Email</th>
-                    <th class="p-3">Phone</th>
-                    <th class="p-3">Actions</th>
-                </tr>
-
-            </thead>
-
-            <tbody id="tableBody"></tbody>
-
-        </table>
-
-    </div>
-
+  <!-- Table container with card-like mobile layout -->
+  <div class="bg-white rounded-xl shadow-md overflow-hidden">
+    <table class="w-full responsive-table">
+      <thead class="bg-orange-500 text-white">
+        <tr>
+          <th class="p-3 text-left">ID</th>
+          <th class="p-3 text-left">Name</th>
+          <th class="p-3 text-left">Email</th>
+          <th class="p-3 text-left">Phone</th>
+          <th class="p-3 text-left">Actions</th>
+        </tr>
+      </thead>
+      <tbody id="tableBody">
+        <tr><td colspan="5" class="text-center py-8 text-gray-400">Loading customers...</td></tr>
+      </tbody>
+    </table>
+  </div>
 </div>
 
 <script>
-
 const API = "https://dukabora.onrender.com";
-
 let customers = [];
 
 async function loadCustomers() {
-
+  try {
     const res = await fetch(`${API}/customers`);
-
     customers = await res.json();
-
-    document.getElementById("totalCustomers").innerText =
-        customers.length;
-
+    document.getElementById("totalCustomers").innerText = customers.length;
     renderTable(customers);
+  } catch (err) {
+    document.getElementById("tableBody").innerHTML = `<tr><td colspan="5" class="text-center py-8 text-red-500">⚠️ Failed to load. Refresh page.</td></tr>`;
+  }
 }
 
 function renderTable(data) {
+  const tbody = document.getElementById("tableBody");
+  if (!data.length) {
+    tbody.innerHTML = `<tr><td colspan="5" class="text-center py-8 text-gray-400">No customers found</td></tr>`;
+    return;
+  }
+  tbody.innerHTML = data.map(c => `
+    <tr class="border-b border-gray-100">
+      <td data-label="ID" class="p-3">${c.id}</td>
+      <td data-label="Name" class="p-3 font-medium">${escapeHtml(c.name)}</td>
+      <td data-label="Email" class="p-3 text-gray-600 break-all">${escapeHtml(c.email)}</td>
+      <td data-label="Phone" class="p-3">${escapeHtml(c.phone)}</td>
+      <td data-label="Actions" class="p-3">
+        <div class="action-group">
+          <button onclick="editCustomer(${c.id})" class="bg-blue-500 hover:bg-blue-600 text-white px-3 py-1.5 rounded-lg text-sm">✏️ Edit</button>
+          <button onclick="deleteCustomer(${c.id})" class="bg-red-500 hover:bg-red-600 text-white px-3 py-1.5 rounded-lg text-sm">🗑️ Delete</button>
+        </div>
+      </td>
+    </tr>
+  `).join('');
+}
 
-    const table = document.getElementById("tableBody");
-
-    table.innerHTML = "";
-
-    data.forEach(customer => {
-
-        table.innerHTML += `
-        <tr class="border-b">
-
-            <td class="p-3">${customer.id}</td>
-            <td class="p-3">${customer.name}</td>
-            <td class="p-3">${customer.email}</td>
-            <td class="p-3">${customer.phone}</td>
-
-            <td class="p-3">
-
-                <button
-                    onclick="editCustomer(${customer.id})"
-                    class="bg-blue-500 text-white px-3 py-1 rounded">
-                    Edit
-                </button>
-
-                <button
-                    onclick="deleteCustomer(${customer.id})"
-                    class="bg-red-500 text-white px-3 py-1 rounded ml-2">
-                    Delete
-                </button>
-
-            </td>
-
-        </tr>
-        `;
-    });
+function escapeHtml(str) {
+  if (!str) return '';
+  return str.replace(/[&<>]/g, function(m) {
+    if (m === '&') return '&amp;';
+    if (m === '<') return '&lt;';
+    if (m === '>') return '&gt;';
+    return m;
+  });
 }
 
 async function deleteCustomer(id) {
-
-    if (!confirm("Delete customer?")) return;
-
-    await fetch(`${API}/customers/${id}`, {
-        method: "DELETE"
-    });
-
-    loadCustomers();
+  if (!confirm("Delete this customer?")) return;
+  await fetch(`${API}/customers/${id}`, { method: "DELETE" });
+  loadCustomers();
 }
 
 async function editCustomer(id) {
-
-    const customer =
-        customers.find(c => c.id === id);
-
-    const name =
-        prompt("Name", customer.name);
-
-    if (!name) return;
-
-    const email =
-        prompt("Email", customer.email);
-
-    if (!email) return;
-
-    const phone =
-        prompt("Phone", customer.phone);
-
-    if (!phone) return;
-
-    await fetch(`${API}/customers/${id}`, {
-        method: "PUT",
-        headers: {
-            "Content-Type":"application/json"
-        },
-        body: JSON.stringify({
-            name,
-            email,
-            phone
-        })
-    });
-
-    loadCustomers();
+  const customer = customers.find(c => c.id === id);
+  if (!customer) return;
+  
+  const name = prompt("Edit name", customer.name);
+  if (!name) return;
+  const email = prompt("Edit email", customer.email);
+  if (!email) return;
+  const phone = prompt("Edit phone", customer.phone);
+  if (!phone) return;
+  
+  await fetch(`${API}/customers/${id}`, {
+    method: "PUT",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ name, email, phone })
+  });
+  loadCustomers();
 }
 
-document
-.getElementById("search")
-.addEventListener("input", e => {
-
-    const keyword =
-        e.target.value.toLowerCase();
-
-    const filtered =
-        customers.filter(c =>
-            c.name.toLowerCase().includes(keyword) ||
-            c.email.toLowerCase().includes(keyword) ||
-            c.phone.toLowerCase().includes(keyword)
-        );
-
-    renderTable(filtered);
+// Live search with responsive filter
+document.getElementById("search").addEventListener("input", (e) => {
+  const keyword = e.target.value.toLowerCase();
+  const filtered = customers.filter(c => 
+    c.name.toLowerCase().includes(keyword) ||
+    c.email.toLowerCase().includes(keyword) ||
+    c.phone.toLowerCase().includes(keyword)
+  );
+  renderTable(filtered);
 });
 
 loadCustomers();
-
 </script>
-
 </body>
 </html>
